@@ -10,6 +10,8 @@ const port: (number | string) = process.env.PORT || 3000;
 app.set("views", "./views");
 app.set("view engine", "pug");
 
+app.use(express.static("public"));
+
 // Routes
 clientRoutes(app);
 
