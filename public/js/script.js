@@ -23,6 +23,18 @@ if(!cart) {
   localStorage.setItem("cart", JSON.stringify([]));
 }
 
+// Show thông báo thành công
+const alertAddCartSusscess = () => {
+  const elementAlert = document.querySelector("[alert-add-cart-susscess]");
+  if(elementAlert) {
+    elementAlert.classList.remove("alert-hidden");
+
+    setTimeout(() => {
+      elementAlert.classList.add("alert-hidden");
+    }, 3000);
+  }
+};
+
 // Thêm tour vào giỏ hàng
 const formAddToCart = document.querySelector("[form-add-to-cart]");
 if(formAddToCart) {
@@ -47,6 +59,8 @@ if(formAddToCart) {
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
+
+      alertAddCartSusscess();
     }
   });
 }
