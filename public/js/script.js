@@ -191,3 +191,39 @@ const updateItemInCart = () => {
 // Lấy data giỏ hàng in ra giao diện
 drawListTour();
 // Hết Lấy data giỏ hàng in ra giao diện
+
+// Đặt Tour
+const formOrder = document.querySelector("[form-order]");
+if(formOrder) {
+  formOrder.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const cart = JSON.parse(localStorage.getItem("cart"));
+
+    const fullName = event.target.elements.fullName.value;
+    const phone = event.target.elements.phone.value;
+    const note = event.target.elements.note.value;
+
+    const data = {
+      info: {
+        fullName: fullName,
+        phone: phone,
+        note: note
+      },
+      cart: cart
+    };
+
+    fetch("/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
+  });
+}
+// Hết Đặt Tour
