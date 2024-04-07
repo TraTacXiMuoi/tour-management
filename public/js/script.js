@@ -1,19 +1,22 @@
 // Slider Tour Detail
-var swiperSliderThumb = new Swiper(".swiperSliderThumb", {
-  spaceBetween: 10,
-  slidesPerView: 4,
-});
-
-var swiperSliderMain = new Swiper(".swiperSliderMain", {
-  spaceBetween: 10,
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-  thumbs: {
-    swiper: swiperSliderThumb,
-  },
-});
+const swiperSlider = document.querySelector(".swiperSliderThumb");
+if(swiperSlider) {
+  var swiperSliderThumb = new Swiper(".swiperSliderThumb", {
+    spaceBetween: 10,
+    slidesPerView: 4,
+  });
+  
+  var swiperSliderMain = new Swiper(".swiperSliderMain", {
+    spaceBetween: 10,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    thumbs: {
+      swiper: swiperSliderThumb,
+    },
+  });
+}
 // End Slider Tour Detail
 
 // Cart
@@ -34,6 +37,16 @@ const alertAddCartSusscess = () => {
     }, 3000);
   }
 };
+
+// showMiniCart
+const showMiniCart = () => {
+  const miniCart = document.querySelector("[mini-cart]");
+  if(miniCart) {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    miniCart.innerHTML = cart.length;
+  }
+}
+showMiniCart();
 
 // Thêm tour vào giỏ hàng
 const formAddToCart = document.querySelector("[form-add-to-cart]");
@@ -61,6 +74,8 @@ if(formAddToCart) {
       localStorage.setItem("cart", JSON.stringify(cart));
 
       alertAddCartSusscess();
+
+      showMiniCart();
     }
   });
 }
