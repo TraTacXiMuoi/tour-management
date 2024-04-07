@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import moment from "moment";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
 dotenv.config();
 
 import clientRoutes from "./routes/client/index.route";
@@ -12,6 +13,9 @@ app.set("views", "./views");
 app.set("view engine", "pug");
 
 app.use(express.static("public"));
+
+// parse application/json
+app.use(bodyParser.json());
 
 // App Local Variables
 app.locals.moment = moment;
