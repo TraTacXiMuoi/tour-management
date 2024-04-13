@@ -222,7 +222,12 @@ if(formOrder) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        if(data.code == 200) {
+          localStorage.removeItem("cart");
+          window.location.href = `/order/success?orderCode=${data.orderCode}`;
+        } else {
+          alert("Đặt hàng không thành công!");
+        }
       });
   });
 }

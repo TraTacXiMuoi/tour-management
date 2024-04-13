@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import Order from "../../models/order.model";
 import { generateOrderCode } from "../../helpers/generate.helper";
+import Tour from "../../models/tour.model";
+import OrderItem from "../../models/order-item.model";
 
 // [POST] /order/
 export const order = async (req: Request, res: Response) => {
   const data = req.body;
 
-  console.log(data);
   // Lưu data vào bảng orders
   const dataOrder = {
     code: "",
@@ -15,8 +16,6 @@ export const order = async (req: Request, res: Response) => {
     note: data.info.note,
     status: "initial",
   };
-
-  console.log(dataOrder);
 
   const order = await Order.create(dataOrder);
   const orderId = order.dataValues.id;
@@ -30,6 +29,31 @@ export const order = async (req: Request, res: Response) => {
     }
   });
   // Hết Lưu data vào bảng orders
+
+  // Lưu data vào bảng orders_item
+  for (const item of data.cart) {
+    const dataItem = {
+      orderId: orderId,
+      tourId: item.tourId,
+      quantity: item.quantity
+    };
+
+    const tourInfo = await Tour.findOne({
+      where: {
+        id: item.tourId,
+        deleted: false,
+        status: "active"
+      },
+      raw: true
+    });
+
+    dataItem["price"] = tourInfo["price"];
+    dataItem["discount"] = tourInfo["discount"];
+    dataItem["timeStart"] = tourInfo["timeStart"];
+
+    await OrderItem.create(dataItem);
+  }
+  // Hết Lưu data vào bảng orders_item
 
   res.json({
     code: 200,
