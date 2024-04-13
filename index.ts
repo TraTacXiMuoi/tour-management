@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 dotenv.config();
 
+import adminRoutes from "./routes/admin/index.route";
 import clientRoutes from "./routes/client/index.route";
+import { systemConfig } from "./config/system";
 
 const app: Express = express();
 const port: (number | string) = process.env.PORT || 3000;
@@ -19,8 +21,10 @@ app.use(bodyParser.json());
 
 // App Local Variables
 app.locals.moment = moment;
+app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 // Routes
+adminRoutes(app);
 clientRoutes(app);
 
 app.listen(port, () => {
