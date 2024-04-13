@@ -3,6 +3,7 @@ import Tour from "../../models/tour.model";
 import Category from "../../models/category.model";
 import { generateTourCode } from "../../helpers/generate.helper";
 import { systemConfig } from "../../config/system";
+import TourCategory from "../../models/tour-category.model";
 
 // [GET] /admin/tours/
 export const index = async (req: Request, res: Response) => { 
@@ -72,8 +73,12 @@ export const createPost = async (req: Request, res: Response) => {
   };
   
   const tour = await Tour.create(dataTour);
+  const tourId = tour.dataValues.id;
 
-  console.log(tour);
+  await TourCategory.create({
+    tour_id: tourId,
+    category_id: parseInt(req.body.category_id)
+  });
 
   res.redirect(`/${systemConfig.prefixAdmin}/tours`);
 };
