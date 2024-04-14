@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import path from "path";
 import moment from "moment";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -25,6 +26,13 @@ app.use(bodyParser.json());
 // App Local Variables
 app.locals.moment = moment;
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+
+// TinyMCE
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
+// End TinyMCE
 
 // Routes
 adminRoutes(app);
